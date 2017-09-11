@@ -1,0 +1,25 @@
+---
+
+- name: Container-ES - set vm.max_map_count
+  sysctl: name=vm.max_map_count value=262144
+
+- name: "{{ es_node_name }} - create config directory"
+  file: path="/opt/docker/containers/{{ es_node_name }}/config" state=directory mode=0755 owner=root group=root
+
+- name: "{{ es_node_name }} - create scripts directory"
+  file: path="/opt/docker/containers/{{ es_node_name }}/config/scripts" state=directory mode=0755 owner=root group=root
+
+- name: "{{ es_node_name }} - install as service"
+  template: src=systemd.j2 dest="/etc/systemd/system/docker-{{ es_node_name }}.service" mode=0755 owner=root group=root
+
+- name: reload systemd
+  command: systemctl daemon-reload
+
+- name: "{{ es_node_name }} - install kibana.yml"
+  template: src="kibana.yml.j2" dest="/opt/docker/containers/{{ es_node_name }}/config/kibana.yml" mode=0644 owner=root group=root
+
+- name: "{{ es_node_name }} - start service"
+  service: name="docker-{{ es_node_name }}" state=restarted enabled=yes
+  
+- name: "{{ es_node_name }} - check master"
+  wait_for: host="172.17.0.5" port=5601

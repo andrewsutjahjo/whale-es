@@ -1,0 +1,7 @@
+---
+
+es_node_name: "node4"
+
+es_service_after: "docker.service"
+
+es_version: "5.2.2"
