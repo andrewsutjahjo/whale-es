@@ -8,7 +8,7 @@
     - {role: container-es, es_node_name: "node1", es_ismaster: "true", es_isdata: "false", es_service_after: "docker.service"}
     - {role: container-es, es_node_name: "node2", es_ismaster: "false", es_isdata: "true", es_service_after: "docker-node1.service"}
     - {role: container-es, es_node_name: "node3", es_ismaster: "false", es_isdata: "true", es_service_after: "docker-node1.service"}
-	- {role: container-kibana, es_node_name: "node4", es_service_after: "docker.service"}
+    - {role: container-kibana, es_node_name: "node4", es_service_after: "docker.service"}
     - fill-es
     - java
     - elasticsearch
